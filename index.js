@@ -3,6 +3,13 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
+app.use(express.json({ extended: false }));
+
+//Register API
+app.use('/api/register', require('./router/api/register/register'));
+
+//Login API
+app.use('/api/login', require('./router/api/login/login'));
 
 //Single css file for all
 app.use('/styles', require('./router/static/css/styles'));
