@@ -1,0 +1,22 @@
+const express = require('express');
+const app = express();
+
+const PORT = process.env.PORT || 8080;
+
+
+//Single css file for all
+app.use('/styles', require('./router/static/css/styles'));
+
+// login page route
+app.use('/login', require('./router/static/html/login'));
+app.use('/login.js', require('./router/static/js/login'));
+app.use('/login/login.js', require('./router/static/js/login'));
+
+
+//Setting 404 page
+app.use('*', (req, res) => { res.sendFile(__dirname + '/public/404_page/index.html'); });
+app.use('login/lost_cat.jpg', (req, res) => { res.sendFile(__dirname + '/public/404_page/lost_cat.jpg'); });
+
+
+
+app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));

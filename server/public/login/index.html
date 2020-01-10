@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <script src="login.js"></script>
+    <title>DwarfMe - A URL Shortener App</title>
+    <style> </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>DwarfMe</h1>
+    </header>
+    <section class="section">
+        <form action="" class="loginForm" id="loginForm">
+            <div class="loginHeading">
+                <h4>Login</h4>
+            </div>
+            <label for="">Email</label>
+            <input type="email" id="signInEmail" name="signInEmail" class="u-full-width" />
+            <label for="">Password</label>
+            <input type="password" id="singInPassword" name="singInPassword" class="u-full-width" />
+            <button class="button-primary signInBtn">Sign In</button>
+            <div class="loginLastSection">
+                <p id="forgotPassBtn"> <a href="#">Forgot Password?</a></p>
+                <p id="signUpBtn"> <a href="#">Sign-Up</a></p>
+            </div>
+        </form>
+        <form action="" class="registerForm" id="forgotPassForm" style="display: none;">
+            <div class="loginHeading">
+                <h4>Reset Password</h4>
+            </div>
+            <label for="">Email</label>
+            <input type="email" id="forgotEmail" name="forgotEmail" class="u-full-width" />
+            <button class="button-primary signInBtn">Reset Password</button>
+            <div class="loginLastSection">
+                <p class="backToLogin"><a href="#">&#x21A9;Back to Login</a></p>
+            </div>
+        </form>
+        <form action="" class="forgotPassForm" id="registerForm" style="display: none;">
+            <div class="loginHeading">
+                <h4>Sign-Up</h4>
+            </div>
+            <label for="">Email</label>
+            <input type="email" id="signupEmail" name="signupEmail" class="u-full-width" />
+            <label for="">Password</label>
+            <input type="password" id="signUpPassword" name="signUpPassword" class="u-full-width" />
+            <label for="">Confirm Password</label>
+            <input type="password" id="signUpConfirmPassword" name="signUpConfirmPassword" class="u-full-width" />
+            <button class="button-primary signInBtn">Sign-Up</button>
+            <div class="loginLastSection">
+                <p class="backToLogin"><a href="#">&#x21A9;Back to Login</a></p>
+            </div>
+        </form>
+    </section>
+    <footer class="footer">
+        <code>Developed with ❤️ by <a href="https://github.com/prashantkt10" target="_blank">Prashant</a></code>
+    </footer>
+</body>
+
+</html>
