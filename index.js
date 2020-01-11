@@ -11,6 +11,12 @@ app.use('/api/register', require('./router/api/register/register'));
 //Login API
 app.use('/api/login', require('./router/api/login/login'));
 
+//Set OTP API
+app.use('/api/setotp', require('./router/api/otp/setotp'));
+
+//Get OTP API
+app.use('/api/verifyotp', require('./router/api/otp/verifyotp'));
+
 //Single css file for all
 app.use('/styles', require('./router/static/css/styles'));
 
