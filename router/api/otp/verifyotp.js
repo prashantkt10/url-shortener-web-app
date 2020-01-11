@@ -10,12 +10,12 @@ router.post('/', [
 ], async (req, res) => {
     try {
         const errors = validationResult(req);
-        if (!errors.isEmpty()) return res.status(406).json({ errors: errors.array() });
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
         const { email, otp } = req.body;
         redisClient.get(email, function (e, r) {
-            if (e || !r) return res.status(500).json({ 'message': 'System error' });
+            if (e) return res.status(500).json({ 'message': 'System error' });
             if (r == otp) return res.json({ 'message': 'OTP matched' });
-            return res.status(400).json({ 'message': 'OTP is wrong' });
+            else return res.status(400).json({ 'message': 'Email and OTP mismatch' });
         });
     }
     catch (e) { return res.status(500).json({ message: 'System error' }); }
