@@ -1,11 +1,13 @@
-const express = require('express'), morgan = require('morgan');
-const app = express();
+const express = require('express'), morgan = require('morgan'), cookieParser = require('cookie-parser');
+const app = express(), auth = require('./middlewares/auth');
 
 const PORT = process.env.PORT || 8080;
 
+
 //express middlewares
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 app.use(express.json({ extended: false }));
+app.use(cookieParser());
 
 //Register API
 app.use('/api/register', require('./router/api/register/register'));
@@ -19,14 +21,28 @@ app.use('/api/setotp', require('./router/api/otp/setotp'));
 //Get OTP API
 app.use('/api/verifyotp', require('./router/api/otp/verifyotp'));
 
-//Single css file for all
+
+// css files for all pages
 app.use('/styles', require('./router/static/css/styles'));
 
 // login page route
-app.use('/login', require('./router/static/html/login'));
+app.use('/login', auth, require('./router/static/html/login'));
 app.use('/login.js', require('./router/static/js/login'));
 app.use('/login/login.js', require('./router/static/js/login'));
 
+
+//home page route
+app.use('/home', auth, require('./router/static/html/home'));
+app.use('/home.js', require('./router/static/js/home'));
+app.use('/home/home.js', require('./router/static/js/home'));
+
+// '/' redirect test
+app.get('/', auth, async (req, res) => {
+    if (!req.user) {
+        await res.clearCookie();
+        return res.redirect('/login');
+    } return res.redirect('/home');
+});
 
 //Setting 404 page
 app.use('*', (req, res) => { res.sendFile(__dirname + '/public/404_page/index.html'); });

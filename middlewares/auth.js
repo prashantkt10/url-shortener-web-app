@@ -1,11 +1,9 @@
-const express = require('express');
+const express = require('express'), config = require('config'), jwt = require('jsonwebtoken');
 const router = express.Router();
 
 module.exports = function (req, res, next) {
-    const token = req.header('x-auth-token');
-    if (!token) return res.status(401).json({ msg: 'No token, auth denied' });
-    try {
-        const decoded = jwt.verify(token, config.get('jwtSecret'));
-        req.user = decoded.user; next();
-    } catch (e) { res.status(401).json({ message: 'Token is not valid' }); }
+    if (!req || !req.cookies || !req.cookies['auth-token']) { req.user = null; next(); return; }
+    const token = req.cookies['auth-token']; if (!token) { req.user = null; next(); return; }
+    try { const decoded = jwt.verify(token, config.get('jwtSecret')); req.user = decoded; next(); return; }
+    catch (e) { console.log('error ', e); req.user = null; next(); }
 }
