@@ -1,8 +1,10 @@
-const express = require('express');
+const express = require('express'), morgan = require('morgan');
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
+//express middlewares
+app.use(morgan('combined'));
 app.use(express.json({ extended: false }));
 
 //Register API
