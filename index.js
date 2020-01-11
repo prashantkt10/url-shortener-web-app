@@ -22,6 +22,10 @@ app.use('/api/setotp', require('./router/api/otp/setotp'));
 app.use('/api/verifyotp', require('./router/api/otp/verifyotp'));
 
 
+//Logout API
+app.use('/api/logout', (req, res) => { res.clearCookie('auth-token'); return res.json({ success: 1, fail: 0, system: 0 }) });
+
+
 // css files for all pages
 app.use('/styles', require('./router/static/css/styles'));
 
@@ -36,16 +40,13 @@ app.use('/home', auth, require('./router/static/html/home'));
 app.use('/home.js', require('./router/static/js/home'));
 app.use('/home/home.js', require('./router/static/js/home'));
 
-// '/' redirect test
-app.get('/', auth, async (req, res) => {
+//handling all other requests
+app.use('*', auth, async (req, res) => {
     if (!req.user) {
         await res.clearCookie();
         return res.redirect('/login');
     } return res.redirect('/home');
 });
-
-//Setting 404 page
-app.use('*', (req, res) => { res.sendFile(__dirname + '/public/404_page/index.html'); });
 app.use('login/lost_cat.jpg', (req, res) => { res.sendFile(__dirname + '/public/404_page/lost_cat.jpg'); });
 
 

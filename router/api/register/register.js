@@ -16,7 +16,7 @@ router.post('/', [
         dbRes = await pool.query(`INSERT INTO users(email,password) VALUES('${email}','${password}') RETURNING user_id`);
         if (dbRes.rowCount > 0) {
             const payload = { 'user': { id: dbRes.rows[0]['user_id'] } };
-            const jwToken = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 6000000 });
+            const jwToken = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600 });
             res.cookie('auth-token', jwToken, { httpOnly: true, sameSite: 'Strict' });
             return res.json({ success: 1, fail: 0, system: 0 });
         } return res.status(500).json({ success: 0, fail: 1, system: 1 });
