@@ -12,7 +12,7 @@ router.post('/', [
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), success: 0, fail: 1, system: 0, redirect: 0 });
         const { longURL } = req.body;
-        const dbRes0 = await pool.query(`SELECT * FROM links WHERE user_id='${req.user.user.id}' AND longurl='${longURL}'`);
+        const dbRes0 = await pool.query(`SELECT * FROM links WHERE longurl='${longURL}'`);
         if (dbRes0.rows.length > 0) return res.json({ success: 0, fail: 1, system: 0, redirect: 0, duplicate: 1 });
         const hashShortenURL = function (longURL) { if (!longURL) return; return crypto.createHash('SHA256').update(longURL).digest('hex').substr(0, 8); }
         const shortURL = hashShortenURL(longURL);
