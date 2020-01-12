@@ -7,6 +7,7 @@ router.post('/', [
     check('password', 'Password is required').isLength({ min: 6 })
 ], async (req, res) => {
     try {
+        console.log('came in login');
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(406).json({ errors: errors.array(), success: 0, fail: 1, system: 0 });
         var { email, password } = req.body;
