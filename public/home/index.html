@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../styles/styles.css">
     <script src="home.js"></script>
 
-    <title>DwarfMe - A URL Shortener App</title>
+    <title>DwarfMe-A URL Shortener App</title>
 </head>
 
 <body>
@@ -28,10 +28,10 @@
                 <h5 class="shortedURLHeader">Short your Long URL</h5>
                 <form action="" id="urlGenerateForm">
                     <label for="">Your Long URL:</label>
-                    <input type="text" id="longURL" name="longURL" class="u-full-width" />
+                    <input type="text" id="longURL" name="longURL" class="u-full-width" autocomplete="off" />
                     <label for="">Short URL:</label>
                     <input type="text" id="shortURL" name="shortURL" class="u-full-width" disabled
-                        style="background: lightgray;" />
+                        style="background: lightgray;" autocomplete="off" />
                     <input type="checkbox" name="customURLoption" id="customURLoption" value="Bike"> Custom URL<br>
                     <button class="button-primary signInBtn" id="getShortURLBtn">Generate Short URL</button>
                 </form>

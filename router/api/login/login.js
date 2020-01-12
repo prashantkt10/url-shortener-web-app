@@ -17,7 +17,7 @@ router.post('/', [
             var payload = {};
             const isMatch = await bcrypt.compare(password, dbRes.rows[0]['password']);
             if (isMatch) {
-                payload = { 'user': { id: dbRes.rows[0]['user_id'] } };
+                payload = { 'user': { id: dbRes.rows[0]['user_id'], role: dbRes.rows[0]['role'] } };
                 const jwToken = jwt.sign(payload, config.get('jwtSecret'), { expiresIn: '1h' });
                 res.cookie('auth-token', jwToken, { httpOnly: true, sameSite: 'Strict' });
                 return res.json({ success: 1, fail: 0, system: 0 });

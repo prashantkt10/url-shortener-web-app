@@ -17,8 +17,8 @@ window.onload = function () {
         event.preventDefault(); changeFormStatus(urlGenerateForm, getShortURLBtn, true);
         const formData = new FormData(urlGenerateForm), reqData = {};
         reqData['longURL'] = formData.get('longURL'); reqData['shortURL'] = formData.get('shortURL');
-        if (!reqData || !reqData['longURL']) {
-            let data = {}; data.title = 'Error!'; data.message = 'Long URL field is mandatory to generate short URL.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
+        if ((!reqData || !reqData['longURL']) || (customURLoption.checked && !reqData['shortURL'])) {
+            let data = {}; data.title = 'Error!'; data.message = 'Any of asked field is empty.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
             showAlert(data); changeFormStatus(urlGenerateForm, getShortURLBtn, false); return;
         }
         const genURLRes = await sendRequest(reqData, '/api/shorten');

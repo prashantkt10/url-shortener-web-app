@@ -45,14 +45,18 @@ app.use('/home.js', require('./router/static/js/home'));
 app.use('/home/home.js', require('./router/static/js/home'));
 
 
+//home page route
+app.use('/admin', auth, require('./router/static/html/admin'));
+app.use('/admin.js', require('./router/static/js/admin'));
+app.use('/admin/admin.js', require('./router/static/js/admin'));
+
+
 app.use('/*', require('./router/api/url/redirect'));
 
 //handling all other requests
 app.use('*', auth, async (req, res) => {
-    if (!req.user) {
-        await res.clearCookie();
-        return res.redirect('/login');
-    } else return res.redirect('/home');
+    if (!req.user) { await res.clearCookie(); return res.redirect('/login'); }
+    else { if (req.user.user.role == 0) return res.redirect('/home'); else return res.redirect('/admin'); }
 });
 app.use('login/lost_cat.jpg', (req, res) => { res.sendFile(__dirname + '/public/404_page/lost_cat.jpg'); });
 
