@@ -22,7 +22,10 @@ app.use('/api/setotp', require('./router/api/otp/setotp'));
 app.use('/api/verifyotp', require('./router/api/otp/verifyotp'));
 
 //url-shortner apis
-app.use('/api/shorten', require('./router/api/url/shorten'));
+app.use('/api/shorten', auth, require('./router/api/url/shorten'));
+
+//get all shortened url by user
+app.use('/api/shorted', auth, require('./router/api/url/shorted'))
 
 //Logout API
 app.use('/api/logout', (req, res) => { res.clearCookie('auth-token'); return res.json({ success: 1, fail: 0, system: 0 }) });

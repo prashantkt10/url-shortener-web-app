@@ -11,7 +11,6 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="stylesheet" href="../styles/styles.css">
     <script src="home.js"></script>
 
     <title>DwarfMe - A URL Shortener App</title>
@@ -23,13 +22,39 @@
         <p class="header-right" id="logoutBtn">Logout</p>
     </header>
     <section>
-        <div class="lostSection">
-
+        <!-- <div class="container"> -->
+        <div class="row generateURLSection">
+            <div class="twelve columns">
+                <form action="" id="urlGenerateForm">
+                    <label for="">Your Long URL:</label>
+                    <input type="text" id="longURL" name="longURL" class="u-full-width" />
+                    <label for="">Short URL:</label>
+                    <input type="text" id="shortURL" name="shortURL" class="u-full-width" disabled
+                        style="background: lightgray;" />
+                    <button class="button-primary signInBtn" id="getShortURLBtn">Generate Short URL</button>
+                </form>
+            </div>
         </div>
+        <div class="row generatedURLSection" style="border: 1px solid cadetblue;">
+            <h5 class="shortedURLHeader">Shorted URLs</h5>
+            <div class="twelve columns">
+                <p id="shortedDataMessage" style="text-align: center;">Loading shortened URLs...</p>
+                <table class="u-full-width" style="display: none;" id="shortedTable">
+                    <thead>
+                        <tr>
+                            <th>Generated At</th>
+                            <th>Long URL</th>
+                            <th>Short URL</th>
+                            <th>Hits</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyLinks">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- </div> -->
     </section>
-    <footer class="footer">
-        <code>Developed with ❤️ by <a href="https://github.com/prashantkt10" target="_blank">Prashant</a></code>
-    </footer>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hakanersu/AmaranJS@0.5.4/dist/js/jquery.amaran.min.js"></script>
 </body>

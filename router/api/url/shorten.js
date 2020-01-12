@@ -8,15 +8,15 @@ router.post('/', [
     check('longURL', 'URL is required').isURL()
 ], async (req, res) => {
     try {
-        // if (!req.user) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
+        if (!req.user || !req.user.user || !req.user.user.id) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), success: 0, fail: 1, system: 0, redirect: 0 });
         const { longURL } = req.body;
-        const dbRes0 = await pool.query(`SELECT * FROM links WHERE user_id='396de5c6-4f42-4d2a-982b-830772692c9f' AND longurl='${longURL}'`);
+        const dbRes0 = await pool.query(`SELECT * FROM links WHERE user_id='${req.user.user.id}' AND longurl='${longURL}'`);
         if (dbRes0.rows.length > 0) return res.json({ success: 0, fail: 1, system: 0, redirect: 0, duplicate: 1 });
         const hashShortenURL = function (longURL) { if (!longURL) return; return crypto.createHash('SHA256').update(longURL).digest('hex').substr(0, 8); }
         const shortURL = hashShortenURL(longURL);
-        const dbRes = await pool.query(`INSERT INTO links(user_id,longurl,shorturl) VALUES('396de5c6-4f42-4d2a-982b-830772692c9f','${longURL}','${shortURL}')`);
+        const dbRes = await pool.query(`INSERT INTO links(user_id,longurl,shorturl) VALUES('${req.user.user.id}','${longURL}','${shortURL}')`);
         if (dbRes.rowCount == 0) { return res.json({ success: 0, fail: 1, system: 1, redirect: 0, duplicate: 0 }); }
         redisClient.set(shortURL, longURL, function (err, redRes) {
             if (err || !redRes) { return res.status(500).json({ success: 0, fail: 1, system: 1, redirect: 0, duplicate: 0 }); }

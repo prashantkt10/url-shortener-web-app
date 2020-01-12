@@ -92,6 +92,25 @@
             text-shadow:none;
         }
 
+            .generateURLSection{
+                margin-left: 10%;
+                margin-right: 10%;
+                margin-top: 5%;
+            }
+            .generatedURLSection{
+                margin-left: 10%;
+                margin-right: 10%;
+            }
+            .shortedURLHeader{
+                text-align: center;
+                background: cadetblue;
+                color: white;
+            }
+
+            table { width:250px;table-layout:fixed; }
+            table tr { height:1em;  }
+            td { overflow:hidden;white-space:nowrap;  } 
+
         @media only screen and (max-width:700px) {
             .section {
                 width: 90%;
@@ -111,6 +130,15 @@
 
             .footer {
                 height: 23px;
+            }
+            .generateURLSection{
+                margin-left: 1%;
+                margin-right: 1%;
+                margin-top: 2%;
+            }
+            .generatedURLSection{
+                margin-left: 1%;
+                margin-right: 1%;
             }
         }
 

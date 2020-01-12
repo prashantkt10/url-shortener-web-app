@@ -126,7 +126,6 @@ window.onload = function () {
             showAlert(data);
         }
     }
-    var singupUser = function () { }
 
 
     var showAlert = function (data) {
