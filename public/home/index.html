@@ -24,20 +24,22 @@
     <section>
         <!-- <div class="container"> -->
         <div class="row generateURLSection">
-            <div class="twelve columns">
+            <div class="twelve columns" style="border: 1px solid cadetblue;padding: 2%;">
+                <h5 class="shortedURLHeader">Short your Long URL</h5>
                 <form action="" id="urlGenerateForm">
                     <label for="">Your Long URL:</label>
                     <input type="text" id="longURL" name="longURL" class="u-full-width" />
                     <label for="">Short URL:</label>
                     <input type="text" id="shortURL" name="shortURL" class="u-full-width" disabled
                         style="background: lightgray;" />
+                    <input type="checkbox" name="customURLoption" id="customURLoption" value="Bike"> Custom URL<br>
                     <button class="button-primary signInBtn" id="getShortURLBtn">Generate Short URL</button>
                 </form>
             </div>
         </div>
-        <div class="row generatedURLSection" style="border: 1px solid cadetblue;">
+        <div class="row generatedURLSection" style="border: 1px solid cadetblue; margin-top: 4%;">
             <h5 class="shortedURLHeader">Shorted URLs</h5>
-            <div class="twelve columns">
+            <div class="twelve columns" style="padding: 2%;">
                 <p id="shortedDataMessage" style="text-align: center;">Loading shortened URLs...</p>
                 <table class="u-full-width" style="display: none;" id="shortedTable">
                     <thead>

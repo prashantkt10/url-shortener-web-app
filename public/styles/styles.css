@@ -109,7 +109,7 @@
 
             table { width:250px;table-layout:fixed; }
             table tr { height:1em;  }
-            td { overflow:hidden;white-space:nowrap;  } 
+            td { overflow:hidden;word-break: break-all;  } 
 
         @media only screen and (max-width:700px) {
             .section {

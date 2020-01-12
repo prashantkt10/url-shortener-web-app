@@ -7,6 +7,7 @@ window.onload = function () {
     const shortedDataMessage = document.getElementById('shortedDataMessage');
     const tbodyLinks = document.getElementById('tbodyLinks');
     const shortedTable = document.getElementById('shortedTable');
+    const customURLoption = document.getElementById('customURLoption');
 
     logoutBtn.addEventListener('click', async (event) => {
         await sendRequest({}, '/api/logout');
@@ -15,7 +16,7 @@ window.onload = function () {
     getShortURLBtn.addEventListener('click', async (event) => {
         event.preventDefault(); changeFormStatus(urlGenerateForm, getShortURLBtn, true);
         const formData = new FormData(urlGenerateForm), reqData = {};
-        reqData['longURL'] = formData.get('longURL');
+        reqData['longURL'] = formData.get('longURL'); reqData['shortURL'] = formData.get('shortURL');
         if (!reqData || !reqData['longURL']) {
             let data = {}; data.title = 'Error!'; data.message = 'Long URL field is mandatory to generate short URL.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
             showAlert(data); changeFormStatus(urlGenerateForm, getShortURLBtn, false); return;
@@ -30,6 +31,11 @@ window.onload = function () {
             getShortedData(); shortURLBox.value = REQUEST_URL + '/' + genURLRes.data.shortURL; changeFormStatus(urlGenerateForm, getShortURLBtn, false); return;
         }
         changeFormStatus(urlGenerateForm, getShortURLBtn, false); return;
+    });
+
+    customURLoption.addEventListener('click', (event) => {
+        if (customURLoption.checked) { shortURLBox.style.background = ''; shortURLBox.disabled = false; return; }
+        shortURLBox.style.background = 'lightgray'; shortURLBox.disabled = true; return;
     });
 
     var changeFormStatus = function (node, btn, disable) {
