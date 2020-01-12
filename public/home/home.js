@@ -24,7 +24,7 @@ window.onload = function () {
         const genURLRes = await sendRequest(reqData, '/api/shorten');
         if (genURLRes.redirect) { window.location = REQUEST_URL + '/login'; return; }
         if (genURLRes.fail && genURLRes.duplicate) {
-            let data = {}; data.title = 'Not Permitted!'; data.message = 'This URL has already been occupied by someone.'; data.info = 'Please try with another URL'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
+            let data = {}; data.title = 'Not Permitted!'; data.message = !customURLoption.checked ? 'Long URL has already been occupied by someone.' : 'Short URL has already been occupied by someone.'; data.info = 'Please try with another URL'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
             showAlert(data); changeFormStatus(urlGenerateForm, getShortURLBtn, false); return;
         }
         if (genURLRes.success) {

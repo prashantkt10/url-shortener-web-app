@@ -13,12 +13,12 @@ router.post('/', [
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array(), success: 0, fail: 1, system: 0, redirect: 0 });
         const { longURL } = req.body; let shortURL = null; if (req.body.shortURL) shortURL = req.body.shortURL;
-        const dbRes0 = await pool.query(`SELECT * FROM links WHERE longurl='${longURL}'`);
-        if (dbRes0.rows.length > 0) return res.json({ success: 0, fail: 1, system: 0, redirect: 0, duplicate: 1 });
         const hashShortenURL = function (longURL) { if (!longURL) return; return crypto.createHash('SHA256').update(longURL).digest('hex').substr(0, 8); }
         let shorturl = null;
         if (shortURL) shorturl = shortURL;
         else shorturl = hashShortenURL(longURL);
+        const dbRes0 = await pool.query(`SELECT * FROM links WHERE longurl='${longURL}' OR shorturl='${shortURL}'`);
+        if (dbRes0.rows.length > 0) return res.json({ success: 0, fail: 1, system: 0, redirect: 0, duplicate: 1 });
         const dbRes = await pool.query(`INSERT INTO links(user_id,longurl,shorturl) VALUES('${req.user.user.id}','${longURL}','${shorturl}')`);
         if (dbRes.rowCount == 0) { return res.json({ success: 0, fail: 1, system: 1, redirect: 0, duplicate: 0 }); }
         redisClient.set(shorturl, longURL, function (err, redRes) {
