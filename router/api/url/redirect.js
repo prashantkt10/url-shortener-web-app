@@ -3,16 +3,17 @@ const router = express.Router(), pool = require('../../../database/index'), redi
 
 router.get('/', (req, res) => {
     try {
-        console.log('req.originalUrl', req.originalUrl);
         if (!req.protocol || !req.get('host') || !req.originalUrl) return res.redirect('/login');
         const shorturl = req.originalUrl.replace('/', '');
         var updateHits = function (hits) { pool.query(`UPDATE links SET hits='${Number(hits) + 1}' WHERE shorturl='${shorturl}'`).then(() => { return; }).catch(() => { return; }); }
+        var setCache = function (urlCache) { redisClient.set(urlCache['shorturl'], urlCache['longurl']); return; }
         redisClient.get(shorturl, async (err, redisRes) => {
             if (err || !redisRes) {
                 const dbRes = await pool.query(`SELECT * FROM links WHERE shorturl='${shorturl}'`);
-                if (!dbRes || !dbRes.rows || !dbRes.rows.length || !dbRes.rows[0] || dbRes.rows[0]['shorturl']) return res.redirect('/login');
-                else { res.redirect(dbRes.rows[0]['shorturl']); updateHits(dbRes.rows[0]['hits']); }
-            } else { console.log('came here'); res.redirect(redisRes); pool.query(`SELECT * FROM links WHERE shorturl='${shorturl}'`).then((newRes) => { updateHits(newRes.rows[0]['hits']); }); }
+                console.log('came here4', dbRes.rowCount);
+                if (!dbRes.rows.length) return res.redirect('/login');
+                else { res.redirect(dbRes.rows[0]['longurl']); setCache(dbRes.rows[0]); updateHits(dbRes.rows[0]['hits']); return; }
+            } else { res.redirect(redisRes); pool.query(`SELECT * FROM links WHERE shorturl='${shorturl}'`).then((newRes) => { updateHits(newRes.rows[0]['hits']); return; }); }
         });
     } catch (e) { return res.redirect('/login'); }
 });
