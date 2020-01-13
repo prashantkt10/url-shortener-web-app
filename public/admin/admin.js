@@ -7,45 +7,29 @@ window.onload = function () {
         document.cookie = ''; document.location = window.location.origin + '/login';
     });
 
-
-    google.charts.load('current', { packages: ['corechart', 'line'] });
-    google.charts.setOnLoadCallback(drawBasic);
-
-    function drawBasic() {
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'X');
-        data.addColumn('number', 'Dogs');
-
-        data.addRows([
-            [0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9],
-            [6, 11], [7, 27], [8, 33], [9, 40], [10, 32], [11, 35],
-            [12, 30], [13, 40], [14, 42], [15, 47], [16, 44], [17, 48],
-            [18, 52], [19, 54], [20, 42], [21, 55], [22, 56], [23, 57],
-            [24, 60], [25, 50], [26, 52], [27, 51], [28, 49], [29, 53],
-            [30, 55], [31, 60], [32, 61], [33, 59], [34, 62], [35, 65],
-            [36, 62], [37, 58], [38, 55], [39, 61], [40, 64], [41, 65],
-            [42, 63], [43, 66], [44, 67], [45, 69], [46, 69], [47, 70],
-            [48, 72], [49, 68], [50, 66], [51, 65], [52, 67], [53, 70],
-            [54, 71], [55, 72], [56, 73], [57, 75], [58, 70], [59, 68],
-            [60, 64], [61, 60], [62, 65], [63, 67], [64, 68], [65, 69],
-            [66, 70], [67, 72], [68, 75], [69, 80]
-        ]);
-
-        var options = {
-            hAxis: {
-                title: 'Time'
-            },
-            vAxis: {
-                title: 'Popularity'
-            }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-
-        chart.draw(data, options);
+    function drawLineChat(chartPayload) {
+        google.setOnLoadCallback(() => {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Count');
+            data.addColumn('number', 'Links');
+            console.log(chartPayload);
+            data.addRows(chartPayload);
+            var options = { hAxis: { title: 'Time' }, vAxis: { title: 'Links created' } };
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart_div'));
+            chart.draw(data, options);
+        });
     }
 
+    function drawBarChart(chartPayload) {
+        if (!chartPayload || !chartPayload.length) return;
+        chartPayload.unshift(['A', 'B']);
+        google.setOnLoadCallback(() => {
+            var data = google.visualization.arrayToDataTable(chartPayload);
+            var options = { title: 'Hits per link', chartArea: { width: '50%' }, hAxis: { title: 'Total hits', minValue: 0 }, vAxis: { title: 'Shorted Links' } };
+            var chart = new google.visualization.BarChart(document.getElementById('bar_chart_div'));
+            chart.draw(data, options);
+        });
+    }
 
     var sendRequest = async function (payload, api) {
         try {
@@ -62,4 +46,36 @@ window.onload = function () {
             showAlert(data);
         }
     }
+
+    var start = function () {
+        sendRequest({ dataBy: "hour" }, '/api/admin/getlinedata').then((res) => {
+            if (res.fail) {
+                let data = {}; data.title = 'Server Error!'; data.message = 'Please inform IT team about issue or try again later'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
+                showAlert(data);
+            }
+            else if (res.fail && res.redirect) { window.location = REQUEST_URL + '/login'; return; }
+            else if (res.success && res.data.length) {
+                let chartPayload = [];
+                res.data.forEach((point) => { chartPayload.push([point.hour, Number(point.link_count) || 0]); });
+                google.charts.load('current', { packages: ['corechart', 'line'] });
+                google.charts.setOnLoadCallback(drawLineChat(chartPayload));
+            }
+        }).catch();
+
+        sendRequest({ dataBy: "hour" }, '/api/admin/getbardata').then((res) => {
+            if (res.fail) {
+                let data = {}; data.title = 'Server Error!'; data.message = 'Please inform IT team about issue or try again later'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
+                showAlert(data);
+            }
+            else if (res.fail && res.redirect) { window.location = REQUEST_URL + '/login'; return; }
+            else if (res.success && res.data.length) {
+                console.log('resbar ', res);
+                let chartPayload = [];
+                res.data.forEach((point) => { chartPayload.push([point.shorturl, Number(point.hits) || 0]); });
+                google.charts.load('current', { packages: ['corechart', 'bar'] });
+                google.charts.setOnLoadCallback(drawBarChart(chartPayload));
+            }
+        }).catch();
+    }
+    start();
 }

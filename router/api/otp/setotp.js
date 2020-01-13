@@ -13,8 +13,8 @@ router.post('/', [
         const { email } = req.body;
         var dbRes = await pool.query(`SELECT * FROM users WHERE email='${email}'`);
         if (dbRes.rows.length) {
-            var genOTP = function () { return '1234'; return Math.floor(1000 + Math.random() * 9000); }
-            var sendEmail = async function (data) { if (!data) return; return { accepted: [email] }; return await emailAccount.sendMail(data); }
+            var genOTP = function () { return Math.floor(1000 + Math.random() * 9000); }
+            var sendEmail = async function (data) { if (!data) return { accepted: [email] }; return await emailAccount.sendMail(data); }
             const otp = genOTP();
             redisClient.set(dbRes.rows[0]['email'], otp, function (err, data) {
                 if (err || !data) return res.status(500).json({ success: 0, fail: 1, system: 1 });

@@ -81,12 +81,12 @@ window.onload = function () {
         }
     });
     signupBtn.addEventListener('click', async function (event) {
-        event.preventDefault(); const formData = new FormData(registerForm), signUpData = {};
+        event.preventDefault(); const formData = new FormData(registerForm), signUpData = {}; changeFormStatus(registerForm, signupBtn, false);
         signUpData['email'] = formData.get('signupEmail'), signUpData['password'] = formData.get('signUpPassword'), signUpData['confirmPassword'] = formData.get('signUpConfirmPassword');
         console.log('signUpData ', signUpData);
         if (!signUpData['email'] || !signUpData['password'] || !signUpData['confirmPassword']) {
             let data = {}; data.title = 'Please check!'; data.message = 'All fields are required.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-            showAlert(data); return;
+            showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
         }
         if (signUpData['password'] !== signUpData['confirmPassword']) {
             let data = {}; data.title = 'Please check!'; data.message = 'Password & confirm password fields should be same.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
@@ -94,13 +94,13 @@ window.onload = function () {
         }
         if (signUpData['password'].length < 6 || signUpData['confirmPassword'].length < 6) {
             let data = {}; data.title = 'Please check!'; data.message = 'Password & confirm password fields should have minimum 6 characters/ numbers or mix of both'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-            showAlert(data); return;
+            showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
         }
         delete signUpData['confirmPassword'];
         let signUpResponse = await sendRequest(signUpData, '/api/register');
         if (signUpResponse && signUpResponse.success) { window.location = REQUEST_URL + '/home'; return; }
         let data = {}; data.title = 'Failed!'; data.message = 'Failed to register.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-        showAlert(data); return;
+        showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
     });
 
 

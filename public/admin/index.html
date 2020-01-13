@@ -22,8 +22,15 @@
         <h2 class="header-left"><a href="/home" style="text-decoration: none;color: white;">DwarfMe</a></h2>
         <p class="header-right" id="logoutBtn">Logout</p>
     </header>
-    <section>
-        <div id="chart_div"></div>
+    <section style="margin-top: 2%;">
+        <div class="container" style="border: 2px solid aliceblue;">
+            <h4 style="text-align: center;">Links created per hour since last day</h4>
+            <div id="line_chart_div"></div>
+        </div>
+        <div class="container" style="border: 2px solid aliceblue; margin-top: 2%;">
+            <h4 style="text-align: center;">Hits per link</h4>
+            <div id="bar_chart_div"></div>
+        </div>
     </section>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hakanersu/AmaranJS@0.5.4/dist/js/jquery.amaran.min.js"></script>

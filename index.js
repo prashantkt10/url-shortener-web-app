@@ -27,6 +27,9 @@ app.use('/api/shorten', auth, require('./router/api/url/shorten'));
 //get all shortened url by user
 app.use('/api/shorted', auth, require('./router/api/url/shorted'))
 
+//get time series data
+app.use('/api/admin', require('./router/api/admin/admin'));
+
 //Logout API
 app.use('/api/logout', (req, res) => { res.clearCookie('auth-token'); return res.json({ success: 1, fail: 0, system: 0 }) });
 
