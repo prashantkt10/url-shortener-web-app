@@ -47,6 +47,11 @@ window.onload = function () {
         }
     }
 
+    var showAlert = function (data) {
+        if (!data || !data.title || !data.message || !data.info || !data.icon || !data.theme) return;
+        $.amaran({ content: { title: data.title, message: data.message, info: data.info, icon: data.icon }, theme: data.theme }); return;
+    }
+
     var start = function () {
         sendRequest({ dataBy: "hour" }, '/api/admin/getlinedata').then((res) => {
             if (res.fail) {

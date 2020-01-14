@@ -7,7 +7,7 @@ window.onload = function () {
     const forgotPassForm = document.getElementById('forgotPassForm');
     const loginBtn = document.getElementById('loginBtn');
     const resetPassBtn = document.getElementById('resetPassBtn');
-    const signupBtn = document.getElementById('signupBtn');
+    const signupBtn1 = document.getElementById('signupBtn1');
     const otpBox = document.getElementById('otpBox');
     const otpBoxText = document.getElementById('otpBoxText');
     const forgotPassBox = document.getElementById('forgotPassBox');
@@ -15,6 +15,7 @@ window.onload = function () {
 
     const REQUEST_URL = window.location.origin;
 
+    let forgotPassState = 0;
     forgotPassBtn.addEventListener('click', (event) => { event.preventDefault(); showForgotPassForm(); resetForms(); });
     signUpBtn.addEventListener('click', (event) => { event.preventDefault(); showRegisterForm(); resetForms(); });
     this.Array.prototype.forEach.call(backToLogin, function (element) {
@@ -25,6 +26,7 @@ window.onload = function () {
         });
     });
     loginBtn.addEventListener('click', async function (event) {
+        forgotPassState = 1;
         event.preventDefault(); changeFormStatus(loginForm, loginBtn, true);
         const loginInfo = {}, formData = new FormData(loginForm);
         loginInfo['email'] = formData.get('signInEmail');
@@ -40,12 +42,13 @@ window.onload = function () {
             showAlert(data); changeFormStatus(loginForm, loginBtn, false); return;
         }
     });
-    let forgotPassState = 0;
+
     resetPassBtn.addEventListener('click', async function (event) {
         event.preventDefault(); const formData = new FormData(forgotPassForm), newPassInfo = {};
         newPassInfo['email'] = formData.get('forgotEmail'); newPassInfo['otp'] = formData.get('forgotOTP'); newPassInfo['pass'] = formData.get('forgotPass');
         if (forgotPassState) {
-            if (!newPassInfo['email'] || !newPassInfo['otp'] || !newPassInfo['pass']) {
+            if (!newPassInfo['email'] || !newPassInfo['email'].length || !newPassInfo['otp'] || !newPassInfo['otp'].length || !newPassInfo['pass'] || newPassInfo['pass'].length < 6) {
+                console.log('newpassin ', newPassInfo);
                 let data = {}; data.title = 'Please check!'; data.message = 'All fields are required'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
                 showAlert(data); return;
             }
@@ -80,13 +83,13 @@ window.onload = function () {
             }
         }
     });
-    signupBtn.addEventListener('click', async function (event) {
-        event.preventDefault(); const formData = new FormData(registerForm), signUpData = {}; changeFormStatus(registerForm, signupBtn, false);
+    signupBtn1.addEventListener('click', async function (event) {
+        event.preventDefault(); const formData = new FormData(registerForm), signUpData = {}; changeFormStatus(registerForm, signupBtn1, true);
         signUpData['email'] = formData.get('signupEmail'), signUpData['password'] = formData.get('signUpPassword'), signUpData['confirmPassword'] = formData.get('signUpConfirmPassword');
         console.log('signUpData ', signUpData);
         if (!signUpData['email'] || !signUpData['password'] || !signUpData['confirmPassword']) {
             let data = {}; data.title = 'Please check!'; data.message = 'All fields are required.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-            showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
+            showAlert(data); changeFormStatus(registerForm, signupBtn1, false); return;
         }
         if (signUpData['password'] !== signUpData['confirmPassword']) {
             let data = {}; data.title = 'Please check!'; data.message = 'Password & confirm password fields should be same.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
@@ -94,13 +97,13 @@ window.onload = function () {
         }
         if (signUpData['password'].length < 6 || signUpData['confirmPassword'].length < 6) {
             let data = {}; data.title = 'Please check!'; data.message = 'Password & confirm password fields should have minimum 6 characters/ numbers or mix of both'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-            showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
+            showAlert(data); changeFormStatus(registerForm, signupBtn1, false); return;
         }
         delete signUpData['confirmPassword'];
         let signUpResponse = await sendRequest(signUpData, '/api/register');
         if (signUpResponse && signUpResponse.success) { window.location = REQUEST_URL + '/home'; return; }
         let data = {}; data.title = 'Failed!'; data.message = 'Failed to register.'; data.info = 'Please try again'; data.icon = 'fa fa-exclamation-triangle'; data.theme = 'awesome error';
-        showAlert(data); changeFormStatus(registerForm, signupBtn, false); return;
+        showAlert(data); changeFormStatus(registerForm, signupBtn1, false); return;
     });
 
 

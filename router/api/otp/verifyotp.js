@@ -5,9 +5,9 @@ const rateLimiter = rateLimit({ windowMs: 1000, max: 1 });
 
 router.use(rateLimiter);
 router.post('/', [
-    check('email', 'Email is required').isEmail().isLength({ max: 20 }),
+    check('email', 'Email is required').isEmail().isLength({ max: 50 }),
     check('otp', 'OTP is required').isNumeric().isLength({ max: 4, min: 4 }),
-    check('pass', 'Password is required').isString().isLength({ max: 20 })
+    check('pass', 'Password is required').isString().isLength({ min: 6 })
 ], async (req, res) => {
     try {
         const errors = validationResult(req);

@@ -6,7 +6,7 @@ router.post('/getlinedata', [
     check('dataBy', 'dataBy is mandatory field').isString()
 ], (req, res) => {
     try {
-        // if (!req.user || !req.user.user || !req.user.user.id || !req.user.user.role) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
+        if (!req.user || !req.user.user || !req.user.user.id || !req.user.user.role) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(406).json({ errors: errors.array(), success: 0, fail: 1, system: 0 });
         const { dataBy } = req.body;
@@ -26,14 +26,11 @@ router.post('/getlinedata', [
     catch (er) { res.status(500).json({ success: 0, fail: 1, system: 1, redirect: 0, data: res.rows }); }
 });
 
-router.post('/getbardata', [
-    check('dataBy', 'dataBy is mandatory field').isString()
-], (req, res) => {
+router.post('/getbardata', (req, res) => {
     try {
-        // if (!req.user || !req.user.user || !req.user.user.id || !req.user.user.role) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
+        if (!req.user || !req.user.user || !req.user.user.id || !req.user.user.role) { res.clearCookie('auth-token'); return res.json({ success: 0, fail: 1, system: 0, redirect: 1 }); }
         const errors = validationResult(req);
         if (!errors.isEmpty()) return res.status(406).json({ errors: errors.array(), success: 0, fail: 1, system: 0 });
-        const { dataBy } = req.body;
         pool.query(`SELECT shorturl,hits FROM links`)
             .then((dbRes) => {
                 if (!dbRes || !dbRes.rows.length) return res.json({ success: 0, fail: 1, system: 0, redirect: 0 });
