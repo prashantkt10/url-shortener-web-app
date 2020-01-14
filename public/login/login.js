@@ -20,13 +20,13 @@ window.onload = function () {
     signUpBtn.addEventListener('click', (event) => { event.preventDefault(); showRegisterForm(); resetForms(); });
     this.Array.prototype.forEach.call(backToLogin, function (element) {
         element.addEventListener('click', (event) => {
+            resetPassBtn.innerText = 'GET OTP'; forgotPassState = 0; changeFormStatus(forgotPassForm, resetPassBtn, false);
             event.preventDefault(); showLoginForm(); resetForms();
             otpBox.style.display = 'none'; otpBoxText.style.display = 'none';
             passwordBoxText.style.display = 'none'; forgotPassBox.style.display = 'none';
         });
     });
     loginBtn.addEventListener('click', async function (event) {
-        forgotPassState = 1;
         event.preventDefault(); changeFormStatus(loginForm, loginBtn, true);
         const loginInfo = {}, formData = new FormData(loginForm);
         loginInfo['email'] = formData.get('signInEmail');
