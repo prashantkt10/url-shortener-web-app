@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "base-x": "^3.0.7",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.2",
     "config": "^3.2.4",
     "cookie-parser": "^1.4.4",
